@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Граф Знаний Neuronet</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+        #network-container {
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
+        }
+        .ui-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 100;
+            max-width: 300px;
+        }
+        h1 { margin: 0 0 10px 0; font-size: 20px; color: #38bdf8; }
+        p { font-size: 14px; line-height: 1.5; color: #94a3b8; margin-bottom: 15px; }
+        .btn-back {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #38bdf8;
+            color: #0f172a;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .btn-back:hover { background: #7dd3fc; }
+        .stats {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #64748b;
+            border-top: 1px solid #334155;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ui-panel">
+        <h1>🧠 Граф Знаний</h1>
+        <p>Визуализация всех собранных документов и их связей в базе данных Neuronet.</p>
+        <a href="/" class="btn-back">← На главную</a>
+        <div class="stats" id="node-count">Загрузка данных...</div>
+    </div>
+
+    <div id="network-container"></div>
+
+    <script>
+        async function loadGraph() {
+            try {
+                const response = await fetch('/api/knowledge/graph');
+                const data = await response.json();
+                
+                const nodes = new vis.DataSet(data.nodes);
+                const edges = new vis.DataSet(data.edges);
+
+                const container = document.getElementById('network-container');
+                const options = {
+                    nodes: {
+                        shape: 'dot',
+                        size: 16,
+                        font: { size: 12, color: '#cbd5e1' },
+                        color: {
+                            background: '#38bdf8',
+                            border: '#0ea5e9',
+                            highlight: { background: '#7dd3fc', border: '#38bdf8' }
+                        },
+                        borderWidth: 2
+                    },
+                    edges: {
+                        width: 1,
+                        color: { color: '#334155', highlight: '#38bdf8' },
+                        smooth: { type: 'continuous' }
+                    },
+                    physics: {
+                        forceAtlas2Based: {
+                            gravitationalConstant: -50,
+                            centralGravity: 0.01,
+                            springLength: 100,
+                            springConstant: 0.08
+                        },
+                        maxVelocity: 50,
+                        solver: 'forceAtlas2Based',
+                        stabilization: { iterations: 150 }
+                    },
+                    interaction: {
+                        hover: true,
+                        tooltipDelay: 200
+                    }
+                };
+
+                new vis.Network(container, { nodes, edges }, options);
+                document.getElementById('node-count').innerText = `Загружено узлов: ${data.nodes.length}`;
+            } catch (e) {
+                console.error('Ошибка загрузки графа:', e);
+                document.getElementById('node-count').innerText = 'Ошибка загрузки данных';
+            }
+        }
+
+        loadGraph();
+    </script>
+</body>
+</html>
