@@ -10,3 +10,4 @@ apscheduler==3.10.4
 python-dotenv==1.0.1
 aiofiles==24.1.0
 tzdata==2024.2
+psycopg2-binary==2.9.9
