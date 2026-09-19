@@ -46,8 +46,8 @@ MIN_NEW_DOCS_TO_RETRAIN = int(os.getenv("MIN_NEW_DOCS_TO_RETRAIN", "10"))
 
 DEVICE = os.getenv("DEVICE", "cpu")  # на Railway обычно нет GPU -> cpu
 
-# --- Ollama: основной "мозг" чата (уже знает то, что знают открытые модели;
-# собранные данные подмешиваются ему в контекст, а не заново учат с нуля) ---
+# --- База данных ---
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:pass@localhost:5432/db")
 USE_OLLAMA = os.getenv("USE_OLLAMA", "true").lower() in ("1", "true", "yes")
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://ollama-service:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2")
