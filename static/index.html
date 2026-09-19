@@ -175,12 +175,10 @@
     <div class="topics" id="topics"></div>
   </div>
 
-  <div class="stat-block" id="error-block" style="display:none;">
-    <div class="stat-label" style="color:#e8a15a;">последняя ошибка</div>
-    <div class="stat-value" id="last-error" style="color:#e8a15a; font-size:12px; word-break:break-word;"></div>
+  <div class="stat-block" style="display:flex; flex-direction:column; gap:10px;">
+    <button onclick="window.location.href='/knowledge'" style="border-color:var(--signal); background:rgba(79,209,197,0.1);">Открыть граф знаний</button>
+    <button id="scan-btn">запустить скан сейчас</button>
   </div>
-
-  <button id="scan-btn">запустить скан сейчас</button>
 </aside>
 
 <main>

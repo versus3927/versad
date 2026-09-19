@@ -87,9 +87,9 @@ def index():
     return FileResponse("static/index.html")
 
 
-@app.get("/admin")
-def admin_page():
-    return FileResponse("static/admin.html")
+@app.get("/knowledge")
+def knowledge_page():
+    return FileResponse("static/knowledge.html")
 
 
 @app.get("/health")
