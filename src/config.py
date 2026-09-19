@@ -22,7 +22,7 @@ SEARCH_TOPICS = [t.strip() for t in os.getenv(
     "софты для игр,читы,взломы,программирование,технологии,наука,искусственный интеллект"
 ).split(",") if t.strip()]
 PAGES_PER_TOPIC = int(os.getenv("PAGES_PER_TOPIC", "5"))
-SCAN_INTERVAL_MINUTES = int(os.getenv("SCAN_INTERVAL_MINUTES", "1"))  # раз в минуту по умолчанию
+SCAN_INTERVAL_MINUTES = 1  # Жестко ставим 1 минуту, игнорируя переменную окружения
 MIN_CHARS_PER_PAGE = 400
 
 # --- Gemini через сторонний OpenAI-совместимый прокси (ai.starimg.ru) ---
