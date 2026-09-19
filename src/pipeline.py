@@ -9,7 +9,7 @@ import logging
 from . import config
 from .scraper import collect_documents
 from .gemini_filter import clean_batch, append_to_corpus
-from .train import run_training_cycle
+from .train_fixed import run_training_cycle
 
 logger = logging.getLogger("pipeline")
 
