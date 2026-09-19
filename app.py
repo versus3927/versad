@@ -20,6 +20,7 @@ from src.ollama_client import chat as ollama_chat
 from src.ollama_client import is_reachable as ollama_is_reachable
 from src.pipeline import run_full_cycle
 from src.retrieval import find_relevant
+from src.db import init_db, migrate_jsonl_to_db
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(name)s] %(message)s")
 logger = logging.getLogger("app")
@@ -187,6 +188,13 @@ def admin_clear_error():
 
 @app.on_event("startup")
 def on_startup():
+    # Инициализируем БД и переносим данные
+    try:
+        init_db()
+        migrate_jsonl_to_db()
+    except Exception as e:
+        logger.error(f"Критическая ошибка при старте БД: {e}")
+
     if not scheduler.get_job("auto_scan"):
         scheduler.add_job(_run_pipeline_bg, "interval", minutes=config.SCAN_INTERVAL_MINUTES, id="auto_scan", replace_existing=True, max_instances=1, coalesce=True)
     if not scheduler.running:
