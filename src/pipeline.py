@@ -51,14 +51,15 @@ def run_full_cycle(topics: list[str] | None = None) -> dict:
         return {"new_docs": 0, "total_docs": state["total_docs"], "trained": False, "note": state["last_error"]}
 
     try:
-        cleaned = clean_batch(raw_docs)
-        log_steps.append(f"gemini_filter: из {len(raw_docs)} страниц прошло очистку {len(cleaned)}")
+        # Gemini фильтрация отключена: все найденные документы проходят напрямую
+        cleaned = raw_docs
+        log_steps.append(f"filter: из {len(raw_docs)} страниц все {len(cleaned)} прошли (фильтр Gemini отключен)")
         logger.info(log_steps[-1])
     except Exception as e:
-        state["last_error"] = f"gemini_filter упал: {e!r}"
+        state["last_error"] = f"filter упал: {e!r}"
         state["last_run_log"] = log_steps
         _save_state(state)
-        logger.exception("gemini_filter упал")
+        logger.exception("filter упал")
         raise
 
     if cleaned:
