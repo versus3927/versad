@@ -30,7 +30,7 @@ def _load_corpus_ids(tokenizer) -> torch.Tensor:
             text = row[0]
             enc = tokenizer.encode(text)
             # Используем спецсимвол EOS из токенизатора
-            ids.extend(enc.ids + [tokenizer.token_to_id("}"))]) 
+            ids.extend(enc.ids + [tokenizer.token_to_id("}")])
         return torch.tensor(ids, dtype=torch.long)
     except Exception as e:
         logger.error(f"Ошибка загрузки данных из БД: {e}")
