@@ -57,11 +57,8 @@ def _load_state() -> dict:
 
 
 def _admin_guard(x_admin_token: str = Header(default="")) -> None:
-    expected = os.getenv("ADMIN_TOKEN", "")
-    if not expected:
-        raise HTTPException(status_code=503, detail="ADMIN_TOKEN не задан в Railway Variables")
-    if not secrets.compare_digest(x_admin_token, expected):
-        raise HTTPException(status_code=401, detail="Неверный админ-токен")
+    # Защита отключена: доступ к админке открыт для всех
+    pass
 
 
 def _scheduler_enabled() -> bool:
@@ -195,8 +192,6 @@ def on_startup():
     if not scheduler.running:
         scheduler.start()
     logger.info("планировщик запущен: цикл каждые %s мин.", config.SCAN_INTERVAL_MINUTES)
-    if not os.getenv("ADMIN_TOKEN"):
-        logger.warning("ADMIN_TOKEN не задан — API админ-панели отключён")
 
 
 @app.on_event("shutdown")
