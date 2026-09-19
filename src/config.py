@@ -19,7 +19,7 @@ STATE_PATH = DATA_DIR / "state.json"                  # прогресс: ско
 # --- Поиск и сбор данных ---
 SEARCH_TOPICS = [t.strip() for t in os.getenv(
     "SEARCH_TOPICS",
-    "технологии,наука,программирование,искусственный интеллект"
+    "софты для игр,читы,взломы,программирование,технологии,наука,искусственный интеллект"
 ).split(",") if t.strip()]
 PAGES_PER_TOPIC = int(os.getenv("PAGES_PER_TOPIC", "5"))
 SCAN_INTERVAL_MINUTES = int(os.getenv("SCAN_INTERVAL_MINUTES", "1"))  # раз в минуту по умолчанию
