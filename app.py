@@ -20,7 +20,7 @@ from src.ollama_client import chat as ollama_chat
 from src.ollama_client import is_reachable as ollama_is_reachable
 from src.pipeline import run_full_cycle
 from src.retrieval import find_relevant
-from src.db import init_db, migrate_jsonl_to_db
+from src.db import init_db, migrate_jsonl_to_db, get_connection
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(name)s] %(message)s")
 logger = logging.getLogger("app")
@@ -91,6 +91,39 @@ def index():
 @app.get("/knowledge")
 def knowledge_page():
     return FileResponse("static/knowledge.html")
+
+
+@app.get("/api/knowledge/graph")
+def knowledge_graph():
+    \"\"\"Возвращает узлы и связи для визуализации графа из БД.\"\"\"
+    try:
+        conn = get_connection()
+        with conn.cursor() as cur:
+            cur.execute("SELECT topic, text FROM corpus")
+            rows = cur.fetchall()
+        conn.close()
+
+        nodes = []
+        edges = []
+        seen_topics = {}
+
+        for idx, (topic, text) in enumerate(rows):
+            # Узел для документа
+            doc_id = f"doc_{idx}"
+            nodes.append({"id": doc_id, "label": f"Док {idx+1}", "title": text[:100] + "..."})
+            
+            # Узел для темы
+            if topic not in seen_topics:
+                seen_topics[topic] = topic
+                nodes.append({"id": topic, "label": topic, "color": "#facc15", "size: 20"})
+            
+            # Связь документа с его темой
+            edges.append({"from": doc_id, "to": topic})
+
+        return {"nodes": nodes, "edges": edges}
+    except Exception as e:
+        logger.exception("Ошибка генерации графа: %s", e)
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/health")
