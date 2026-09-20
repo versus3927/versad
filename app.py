@@ -107,7 +107,11 @@ def knowledge_graph():
         edges = []
         seen_topics = {}
 
-        for idx, (topic, text) in enumerate(rows):
+        for idx, row in enumerate(rows):
+            if not row: continue
+            topic = row[0] if row[0] else "Общее"
+            text = row[1] if row[1] else ""
+            
             # Узел для документа
             doc_id = f"doc_{idx}"
             nodes.append({"id": doc_id, "label": f"Док {idx+1}", "title": text[:100] + "..."})
