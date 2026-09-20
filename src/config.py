@@ -50,6 +50,6 @@ DEVICE = os.getenv("DEVICE", "cpu")  # на Railway обычно нет GPU -> c
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:pass@localhost:5432/db")
 USE_OLLAMA = os.getenv("USE_OLLAMA", "true").lower() in ("1", "true", "yes")
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://ollama-service:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2:0.5b")
 RAG_TOP_K = int(os.getenv("RAG_TOP_K", "4"))          # сколько документов подмешивать в контекст
 RAG_SNIPPET_CHARS = int(os.getenv("RAG_SNIPPET_CHARS", "800"))
