@@ -99,7 +99,7 @@ def knowledge_graph():
     try:
         conn = get_connection()
         with conn.cursor() as cur:
-            cur.execute("SELECT topic, text FROM corpus")
+            cur.execute("SELECT topic, text FROM corpus ORDER BY id DESC LIMIT 100")
             rows = cur.fetchall()
         conn.close()
 
