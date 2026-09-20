@@ -115,7 +115,7 @@ def knowledge_graph():
             # Узел для темы
             if topic not in seen_topics:
                 seen_topics[topic] = topic
-                nodes.append({"id": topic, "label": topic, "color": "#facc15", "size: 20"})
+                nodes.append({"id": topic, "label": topic, "color": "#facc15", "size": 20})
             
             # Связь документа с его темой
             edges.append({"from": doc_id, "to": topic})
