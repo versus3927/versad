@@ -95,7 +95,7 @@ def knowledge_page():
 
 @app.get("/api/knowledge/graph")
 def knowledge_graph():
-    \"\"\"Возвращает узлы и связи для визуализации графа из БД.\"\"\"
+    """Возвращает узлы и связи для визуализации графа из БД."""
     try:
         conn = get_connection()
         with conn.cursor() as cur:
